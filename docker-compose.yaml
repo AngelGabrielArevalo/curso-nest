@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+  base_pg:
+    image: postgres:15.1
+    container_name: base_pg
+    restart: always
+    environment:
+      POSTGRES_DB: tareas
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.sql.d/init.sql
+    ports:
+      - 5432:5432
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - 80:80
