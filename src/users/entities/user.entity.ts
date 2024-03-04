@@ -2,10 +2,10 @@ import { BaseEntity } from '../../config/base.entity';
 import { ROLES } from '../../constants';
 import { IUser } from '../../interfaces/user.interface';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { UsersProjectsEntity } from './usersProjects.entity';
+import { UsersProjects } from './usersProjects.entity';
 
 @Entity({ name: 'users' })
-export class UserEntity extends BaseEntity implements IUser {
+export class User extends BaseEntity implements IUser {
     @Column()
     firstName: string;
 
@@ -28,8 +28,8 @@ export class UserEntity extends BaseEntity implements IUser {
     role: ROLES;
 
     @OneToMany(
-        () => UsersProjectsEntity,
+        () => UsersProjects,
         (usersProjects) => usersProjects.project,
     )
-    projectsIncludes: UsersProjectsEntity[];
+    projectsIncludes: UsersProjects[];
 }
