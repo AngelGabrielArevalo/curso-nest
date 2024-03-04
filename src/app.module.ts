@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceConfig } from './config/data.source';
 import { ProjectsModule } from './projects/projects.module';
-import { GatosModule } from './gatos/gatos.module';
 
 @Module({
     imports: [
@@ -15,7 +14,6 @@ import { GatosModule } from './gatos/gatos.module';
         TypeOrmModule.forRoot(DataSourceConfig),
         UsersModule,
         ProjectsModule,
-        GatosModule,
     ],
     controllers: [],
     providers: [],

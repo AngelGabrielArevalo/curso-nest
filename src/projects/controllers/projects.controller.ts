@@ -36,7 +36,7 @@ export class ProjectsController {
         @Param('id') id: string,
         @Body() updateProjectDto: UpdateProjectDto,
     ) {
-        this.projectService.update(id, updateProjectDto);
+        return this.projectService.update(id, updateProjectDto);
     }
 
     @Get()
@@ -46,6 +46,6 @@ export class ProjectsController {
 
     @Delete(':id')
     delete(@Param('id') id: string) {
-        this.projectService.delete(id);
+        return this.projectService.delete(id);
     }
 }

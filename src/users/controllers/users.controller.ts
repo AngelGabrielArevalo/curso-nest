@@ -33,7 +33,7 @@ export class UsersController {
 
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-        this.userService.update(id, updateUserDto);
+        return this.userService.update(id, updateUserDto);
     }
 
     @Get()
@@ -43,6 +43,6 @@ export class UsersController {
 
     @Delete(':id')
     delete(@Param('id') id: string) {
-        this.userService.delete(id);
+        return this.userService.delete(id);
     }
 }

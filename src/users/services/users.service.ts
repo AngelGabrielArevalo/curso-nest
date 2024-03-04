@@ -42,9 +42,7 @@ export class UsersService {
     async delete(id: string): Promise<void> {
         const deleteResult: DeleteResult = await this.userRepository.delete(id);
         if (deleteResult.affected === 0) {
-            throw new NotFoundException(
-                'El usuario a elimnar es inexistente.',
-            );
+            throw new NotFoundException('El usuario a elimnar es inexistente.');
         }
     }
 }
