@@ -64,8 +64,10 @@ export class UserService {
     }
 
     async findByUsernameOrEmail(usernameOrEmail: string): Promise<User | null> {
-        return this.userRepository.findOne({
-            where: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
-        });
+        return this.userRepository
+            .createQueryBuilder('user')
+            .where('user.username = :username', { username: usernameOrEmail })
+            .orWhere('user.email = :email', { email: usernameOrEmail })
+            .getOne();
     }
 }

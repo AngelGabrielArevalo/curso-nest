@@ -6,9 +6,16 @@ import { UserService } from 'src/users/services/user.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 
 @Module({
-    imports: [JwtModule, UsersModule],
+    imports: [
+        UsersModule,
+        JwtModule.register({
+            global: true,
+            secret: process.env.JWT_SECRET, // Define tu clave secreta aquí
+            signOptions: { expiresIn: process.env.JWT_EXPIRED_TIME }, // Define el tiempo de expiración del token
+        }),
+    ],
     controllers: [AuthController],
-    providers: [AuthService, UserService, JwtService],
-    exports: [AuthService, JwtModule],
+    providers: [AuthService, UserService],
+    exports: [],
 })
 export class AuthModule {}
