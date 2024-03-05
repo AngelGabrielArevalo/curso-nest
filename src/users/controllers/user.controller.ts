@@ -8,13 +8,14 @@ import {
     Patch,
     Post,
 } from '@nestjs/common';
-import { UsersService } from '../services/users.service';
+import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
+import { CreateUsersProjectsDto } from '../dtos/crearte-users-projects.dto';
 
 @Controller('users')
-export class UsersController {
-    constructor(private readonly userService: UsersService) {}
+export class UserController {
+    constructor(private readonly userService: UserService) {}
 
     @Post()
     create(@Body() createUserDto: CreateUserDto) {
@@ -44,5 +45,10 @@ export class UsersController {
     @Delete(':id')
     delete(@Param('id') id: string) {
         return this.userService.delete(id);
+    }
+
+    @Post('users-to-projects')
+    relationToProject(@Body() createUsersProjectsDto: CreateUsersProjectsDto) {
+        return this.userService.relationToProject(createUsersProjectsDto);
     }
 }
