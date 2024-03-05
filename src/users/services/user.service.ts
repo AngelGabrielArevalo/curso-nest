@@ -6,7 +6,7 @@ import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { CreateUsersProjectsDto } from '../dtos/crearte-users-projects.dto';
 import { UsersProjects } from '../entities/usersProjects.entity';
-import { hashPassword } from 'src/utils';
+import { hashPassword } from '../../utils';
 
 @Injectable()
 export class UserService {
@@ -61,5 +61,11 @@ export class UserService {
         createUsersProjectsDto: CreateUsersProjectsDto,
     ): Promise<UsersProjects> {
         return this.usersProjectsRepository.save(createUsersProjectsDto);
+    }
+
+    async findByUsernameOrEmail(usernameOrEmail: string): Promise<User | null> {
+        return this.userRepository.findOne({
+            where: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
+        });
     }
 }
