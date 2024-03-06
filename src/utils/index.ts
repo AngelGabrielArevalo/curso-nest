@@ -1,1 +1,1 @@
-export * from './functions/hashPassword';
+export * from './functions';

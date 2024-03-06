@@ -6,7 +6,7 @@ import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { CreateUsersProjectsDto } from '../dtos/crearte-users-projects.dto';
 import { UsersProjects } from '../entities/usersProjects.entity';
-import { hashPassword } from '../../utils';
+import { hashPassword } from 'src/utils';
 
 @Injectable()
 export class UserService {

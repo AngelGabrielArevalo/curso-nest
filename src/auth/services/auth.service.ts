@@ -1,8 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/users/entities/user.entity';
 import { UserService } from 'src/users/services/user.service';
-import { validatePassword } from 'src/utils/functions/validatePassword';
+import { validatePassword } from 'src/utils';
+import { AuthResponse } from '../interfaces/auth-response.interface';
+import { PayloadToken } from '../interfaces/token-jwt.interface';
 
 @Injectable()
 export class AuthService {
@@ -11,10 +12,10 @@ export class AuthService {
         private readonly userService: UserService,
     ) {}
 
-    async validateAndGetUser(
+    async validateAndGetAuthResponse(
         usenameOrEmail: string,
         password: string,
-    ): Promise<User | null> {
+    ): Promise<AuthResponse | null> {
         const user =
             await this.userService.findByUsernameOrEmail(usenameOrEmail);
 
@@ -22,6 +23,22 @@ export class AuthService {
             return null;
         }
 
-        return user;
+        const payload: PayloadToken = {
+            sub: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            username: user.username,
+            role: user.role,
+        };
+
+        return {
+            accessToken: await this.generateJWT(payload),
+            exipredToken: process.env.JWT_EXPIRED_TIME,
+        };
+    }
+
+    async generateJWT(payload: PayloadToken): Promise<string> {
+        return this.jwtService.sign(payload);
     }
 }

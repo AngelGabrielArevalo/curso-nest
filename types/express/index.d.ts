@@ -1,9 +1,9 @@
-import { User } from 'src/users/entities/user.entity';
+import { AuthResponse } from 'src/auth/interfaces/auth-response.interface';
 
 declare global {
     namespace Express {
         interface Request {
-            user: User;
+            user: AuthResponse;
         }
     }
 }
