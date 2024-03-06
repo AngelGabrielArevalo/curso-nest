@@ -1,13 +1,15 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
-import { UserCredentialsDto } from '../dtos/user-credentials.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { Request as ExpressRequest } from 'express';
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post('login')
-    login(@Body() { usernameOrEmail, password }: UserCredentialsDto) {
-        return this.authService.validateUserAndGenereteJWT(usernameOrEmail, password);
+    @UseGuards(AuthGuard('local'))
+    login(@Request() request: ExpressRequest) {
+        return request.user;
     }
 }

@@ -3,7 +3,7 @@ import { UserCredentials } from '../interfaces/user-credentials.iterface';
 
 export class UserCredentialsDto implements UserCredentials {
     @IsString()
-    usernameOrEmail: string;
+    username: string;
 
     @IsString()
     password: string;
