@@ -1,24 +1,26 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from 'src/users/services/user.service';
 import { validatePassword } from 'src/utils';
 import { AuthResponse } from '../interfaces/auth-response.interface';
 import { PayloadToken } from '../interfaces/token-jwt.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { Repository } from 'typeorm';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class AuthService {
     constructor(
         private jwtService: JwtService,
-        @Inject(forwardRef(() => UserService))
-        private readonly userService: UserService,
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
     ) {}
 
     async signIn(
         usenameOrEmail: string,
         password: string,
     ): Promise<AuthResponse | null> {
-        const user =
-            await this.userService.findByUsernameOrEmail(usenameOrEmail);
+        const user = await this.findUserByUsernameOrEmailOrId(usenameOrEmail);
 
         if (!user || !(await validatePassword(password, user.password))) {
             return null;
@@ -37,5 +39,23 @@ export class AuthService {
 
     async generateJWT(payload: PayloadToken): Promise<string> {
         return this.jwtService.signAsync(payload);
+    }
+
+    async findUserByUsernameOrEmailOrId(
+        usernameOrEmailOrId: string,
+    ): Promise<User> {
+        const queryBuilder = this.userRepository.createQueryBuilder('user');
+
+        if (isUUID(usernameOrEmailOrId)) {
+            queryBuilder.where('user.id = :id', { id: usernameOrEmailOrId });
+        } else {
+            queryBuilder
+                .where('user.username = :username', {
+                    username: usernameOrEmailOrId,
+                })
+                .orWhere('user.email = :email', { email: usernameOrEmailOrId });
+        }
+
+        return queryBuilder.getOne();
     }
 }

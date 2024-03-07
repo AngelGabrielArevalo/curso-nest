@@ -5,10 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceConfig } from './config/data.source';
 import { ProjectsModule } from './projects/projects.module';
 import { AuthModule } from './auth/auth.module';
-import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
-import { JwtStrategy } from './auth/strategies/jwt.strategy';
-import { PassportConfigModuleModule } from './passport-config-module/passport-config-module.module';
 
 @Module({
     imports: [
@@ -20,9 +16,8 @@ import { PassportConfigModuleModule } from './passport-config-module/passport-co
         UsersModule,
         ProjectsModule,
         AuthModule,
-        PassportConfigModuleModule,
     ],
     controllers: [],
-    providers: [JwtStrategy],
+    providers: [],
 })
 export class AppModule {}
