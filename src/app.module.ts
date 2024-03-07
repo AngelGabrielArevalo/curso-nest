@@ -6,6 +6,9 @@ import { DataSourceConfig } from './config/data.source';
 import { ProjectsModule } from './projects/projects.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './auth/strategies/jwt.strategy';
+import { PassportConfigModuleModule } from './passport-config-module/passport-config-module.module';
 
 @Module({
     imports: [
@@ -16,9 +19,10 @@ import { JwtModule } from '@nestjs/jwt';
         TypeOrmModule.forRoot(DataSourceConfig),
         UsersModule,
         ProjectsModule,
-        AuthModule
+        AuthModule,
+        PassportConfigModuleModule,
     ],
     controllers: [],
-    providers: [],
+    providers: [JwtStrategy],
 })
 export class AppModule {}

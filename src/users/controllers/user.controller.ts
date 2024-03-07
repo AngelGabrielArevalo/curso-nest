@@ -7,12 +7,15 @@ import {
     Param,
     Patch,
     Post,
+    UseGuards,
 } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { CreateUsersProjectsDto } from '../dtos/crearte-users-projects.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
     constructor(private readonly userService: UserService) {}
@@ -37,6 +40,7 @@ export class UserController {
         return this.userService.update(id, updateUserDto);
     }
 
+    @UseGuards()
     @Get()
     findAll() {
         return this.userService.findAll();

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/users/services/user.service';
 import { validatePassword } from 'src/utils';
@@ -9,10 +9,11 @@ import { PayloadToken } from '../interfaces/token-jwt.interface';
 export class AuthService {
     constructor(
         private jwtService: JwtService,
+        @Inject(forwardRef(() => UserService))
         private readonly userService: UserService,
     ) {}
 
-    async validateAndGetAuthResponse(
+    async signIn(
         usenameOrEmail: string,
         password: string,
     ): Promise<AuthResponse | null> {
@@ -25,10 +26,6 @@ export class AuthService {
 
         const payload: PayloadToken = {
             sub: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            username: user.username,
             role: user.role,
         };
 
@@ -39,6 +36,6 @@ export class AuthService {
     }
 
     async generateJWT(payload: PayloadToken): Promise<string> {
-        return this.jwtService.sign(payload);
+        return this.jwtService.signAsync(payload);
     }
 }

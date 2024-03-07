@@ -14,7 +14,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         usernameOrEmail: string,
         password: string,
     ): Promise<AuthResponse | null> {
-        return this.authService.validateAndGetAuthResponse(
+        return this.authService.signIn(
             usernameOrEmail,
             password,
         );
