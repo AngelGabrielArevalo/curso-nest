@@ -7,11 +7,13 @@ import {
     Param,
     Patch,
     Post,
+    UseGuards,
 } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { CreateUsersProjectsDto } from '../dtos/crearte-users-projects.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UserController {
@@ -37,6 +39,7 @@ export class UserController {
         return this.userService.update(id, updateUserDto);
     }
 
+    @UseGuards(AuthGuard())
     @Get()
     findAll() {
         return this.userService.findAll();

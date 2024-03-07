@@ -13,10 +13,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         });
     }
-
+   
     async validate(payloadToken: PayloadToken): Promise<User> {
         const { sub: idUser } = payloadToken;
-
+        console.log('llegue aca')
         const user =
             await this.authService.findUserByUsernameOrEmailOrId(idUser);
 

@@ -30,7 +30,7 @@ export class AuthService {
             sub: user.id,
             role: user.role,
         };
-
+        console.log('llegue acaasdadad');
         return {
             accessToken: await this.generateJWT(payload),
             exipredToken: process.env.JWT_EXPIRED_TIME,
@@ -38,7 +38,10 @@ export class AuthService {
     }
 
     async generateJWT(payload: PayloadToken): Promise<string> {
-        return this.jwtService.signAsync(payload);
+        return this.jwtService.signAsync(payload, {
+            secret: process.env.JWT_SECRET,
+            expiresIn: process.env.JWT_EXPIRED_TIME,
+        });
     }
 
     async findUserByUsernameOrEmailOrId(
