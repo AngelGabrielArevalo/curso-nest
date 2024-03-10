@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request as ExpressRequest } from 'express';
+import { GetUser } from '../decorators/get-user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -12,8 +13,8 @@ export class AuthController {
 
     @UseGuards(AuthGuard())
     @Get('hola')
-    prueba(@Request() request: ExpressRequest) {
-        console.log(request.user);
+    prueba(@GetUser('email') email: string) {
+        console.log(email);
         return { message: 'hola' };
     }
 }
